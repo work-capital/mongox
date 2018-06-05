@@ -31,7 +31,7 @@ defmodule Mongo.Pool do
 
     quote do
       # TODO: Customizable timeout
-      @timeout   5_000
+      @timeout   30_000
       @behaviour unquote(__MODULE__)
       @adapter   unquote(adapter)
       @name      __MODULE__
