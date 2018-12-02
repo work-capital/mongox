@@ -61,7 +61,7 @@ defmodule Mongo.Connection do
 
   @doc false
   def get_more(conn, coll, cursor_id, opts \\ []) do
-    GenServer.call(conn, {:get_more, coll, cursor_id, opts})
+    GenServer.call(conn, {:get_more, coll, cursor_id, opts}, get_timeout(opts))
   end
 
   @doc false
@@ -102,7 +102,7 @@ defmodule Mongo.Connection do
   end
 
   defp get_timeout(opts) do
-    opts[:timeout] || 30000
+    opts[:timeout] || 60_000
   end
 
   defp assign_ids(doc) when is_map(doc) do
@@ -164,7 +164,7 @@ defmodule Mongo.Connection do
   @doc false
   def init(opts) do
     :random.seed(:os.timestamp)
-    timeout = opts[:timeout] || 30000
+    timeout = opts[:timeout] || 60_000
 
     opts = opts
            |> define_multi_host
