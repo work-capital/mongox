@@ -80,7 +80,7 @@ defmodule Mongo.Connection do
   @doc false
   def insert(conn, coll, docs, opts \\ []) do
     {ids, docs} = assign_ids(docs)
-    case GenServer.call(conn, {:insert, coll, docs, opts}) do
+    case GenServer.call(conn, {:insert, coll, docs, opts}, 20_000) do
       {:ok, result} -> {:ok, %{result | inserted_ids: ids}}
       other -> other
     end
@@ -88,12 +88,12 @@ defmodule Mongo.Connection do
 
   @doc false
   def update(conn, coll, query, update, opts \\ []) do
-    GenServer.call(conn, {:update, coll, query, update, opts})
+    GenServer.call(conn, {:update, coll, query, update, opts}, 20_000)
   end
 
   @doc false
   def remove(conn, coll, query, opts \\ []) do
-    GenServer.call(conn, {:remove , coll, query, opts})
+    GenServer.call(conn, {:remove , coll, query, opts}, 20_000)
   end
 
   @doc false
